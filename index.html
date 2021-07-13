@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crop Demo</title>
+    <style>
+        html, body {
+            min-height: 100vh;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div style="border: darkgray solid 1px; display: grid">
+    <canvas></canvas>
+    <img src="./doom.jpg" alt="" style="width: 512px;">
+</div>
+
+<script type="module">
+    import {Crop} from "./crop.js";
+    import {enableCropDefaultControls} from "./crop-control.js";
+
+    const image = document.querySelector("img");
+    const canvas = document.querySelector("canvas");
+    canvas.width = 512;
+    canvas.height = canvas.width*(2/3);
+
+    const crop = new Crop({canvas, image});
+    enableCropDefaultControls({crop, canvas});
+</script>
+
+</body>
+</html>

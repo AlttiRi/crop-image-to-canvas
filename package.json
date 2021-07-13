@@ -1,0 +1,8 @@
+{
+  "name": "crop-image",
+  "version": "1.0.0",
+  "description": "Simple image cropper to canvas",
+  "main": "crop.js",
+  "keywords": ["crop", "canvas", "image"],
+  "license": "MIT"
+}

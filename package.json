@@ -1,7 +1,7 @@
 {
   "name": "crop-image-to-canvas",
   "version": "1.0.0",
-  "description": "Simple image cropper to canvas",
+  "description": "Simple image cropper. Changes are instantly displayed on the canvas element.",
   "main": "crop.js",
   "keywords": ["crop", "canvas", "image"],
   "license": "MIT"

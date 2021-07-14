@@ -1,5 +1,5 @@
 {
-  "name": "crop-image",
+  "name": "crop-image-to-canvas",
   "version": "1.0.0",
   "description": "Simple image cropper to canvas",
   "main": "crop.js",

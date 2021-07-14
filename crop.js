@@ -82,18 +82,16 @@ export class Crop {
             const hSource = hImage;
             const wBaseOffset = (wImage - wSource) / 2;
             const hBaseOffset = 0;
-            const k1 = hImage / hCanvas;
-            const k2 = hImage / hSource;
-            return {k: k1*k2, wSource, hSource, wBaseOffset, hBaseOffset};
+            const k = hImage / hCanvas;
+            return {k, wSource, hSource, wBaseOffset, hBaseOffset};
         } else {
             // if portrait
             const wSource = wImage;
             const hSource = wImage / canvasAspectRatio;
             const wBaseOffset = 0;
             const hBaseOffset = (hImage - hSource) / 2;
-            const k1 = wImage / wCanvas;
-            const k2 = wImage / wSource;
-            return {k: k1*k2, wSource, hSource, wBaseOffset, hBaseOffset};
+            const k = wImage / wCanvas;
+            return {k, wSource, hSource, wBaseOffset, hBaseOffset};
         }
     }
 

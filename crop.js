@@ -1,7 +1,8 @@
 export class Crop {
     /**
-     * @param {HTMLImageElement} image
-     * @param {HTMLCanvasElement} canvas
+     * @param config
+     * @param {HTMLImageElement} config.image
+     * @param {HTMLCanvasElement} config.canvas
      */
     constructor({image, canvas}) {
         this.image = image;
@@ -29,6 +30,8 @@ export class Crop {
     }
 
     _redrawQueued = false;
+
+    /** @private */
     draw() {
         if (this._redrawQueued) {
             return;

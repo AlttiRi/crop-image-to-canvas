@@ -98,7 +98,7 @@ export class Crop {
      */
     zoomByStep(count) {
 
-
+        //
         const {
             image, context,
             wCanvas, hCanvas,
@@ -107,6 +107,7 @@ export class Crop {
             wImage, hImage,
             ww,hh
         } = this;
+        //
 
 
 
@@ -119,6 +120,7 @@ export class Crop {
 
 
 
+        //
         const z = this.zoom - zoom;
         const w = (wOffset )*z
         const h = (hOffset )*z
@@ -127,20 +129,18 @@ export class Crop {
         this.hh += h;
 
         console.log({
-            z:z.toFixed(2),
-            q:w.toFixed(2),
-            h: h.toFixed(2),
-            wOffset: wOffset.toFixed(2),
-            hOffset: hOffset.toFixed(2)
+            z:z.toFixed(2),q:w.toFixed(2),h: h.toFixed(2),wOffset: wOffset.toFixed(2),  hOffset: hOffset.toFixed(2)
         });
-
+        //
 
 
         this.draw();
     }
 
+    //
     ww = 0;
     hh = 0;
+    //
 
     /**
      * Move the canvas by
@@ -149,6 +149,7 @@ export class Crop {
      */
     offset({dx, dy}) {
 
+        //
         if (this.ww || this.hh) {
             this.wOffset += this.ww;
             this.hOffset += this.hh;
@@ -156,6 +157,7 @@ export class Crop {
             this.hh = 0;
             console.log("---");
         }
+        //
 
         this.hOffset += dy;
         this.wOffset += dx;

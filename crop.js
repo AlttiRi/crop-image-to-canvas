@@ -128,9 +128,7 @@ export class Crop {
         this.ww += w;
         this.hh += h;
 
-        console.log({
-            z:z.toFixed(2),q:w.toFixed(2),h: h.toFixed(2),wOffset: wOffset.toFixed(2),  hOffset: hOffset.toFixed(2)
-        });
+        console.log({z:z.toFixed(2),q:w.toFixed(2),h: h.toFixed(2),wOffset: wOffset.toFixed(2),  hOffset: hOffset.toFixed(2)});
         //
 
 

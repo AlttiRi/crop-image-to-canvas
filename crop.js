@@ -18,11 +18,11 @@ export class Crop {
         const init = () => {
             this.wImage = this.image.naturalWidth;
             this.hImage = this.image.naturalHeight;
-            this._computeProps();
+            this._fitImage();
             this.draw();
         }
 
-        if (!image.complete) { // image.naturalWidth === 0
+        if (!image.complete) {
             image.addEventListener("load", init, {once: true});
         } else {
             init();
@@ -61,15 +61,11 @@ export class Crop {
             wCanvas*zoom*(hImage/wImage),
         );
     }
-    _computeProps() {
+    _fitImage() {
         const {wImage, hImage, wCanvas, hCanvas} = this;
-        if (wImage > hImage) { //todo
-            // if landscape
-            this.zoomCanvasDiffPx = -(hImage/wImage)*wCanvas
-            //this.zoomCanvasDiffPx = -(hCanvas*hImage/wImage)*wCanvas/hCanvas
-            //this.zoomCanvasDiffPxH = -(hCanvas*hImage/wImage)
-        } else {
-            // if portrait
+        const k = wCanvas/hCanvas; /* to apply H based changes to W axis */
+        if (wImage/hImage > wCanvas/hCanvas) { /* if the image is wider that the crop */
+            this.zoomCanvasDiffPx = -(hCanvas - wCanvas/(wImage/hImage))*k;
         }
     }
 

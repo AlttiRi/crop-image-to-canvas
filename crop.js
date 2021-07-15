@@ -144,10 +144,10 @@ export class Crop {
     offset({dx, dy}) {
 
         if (this.ww || this.hh) {
-            this.hOffset += this.hh;
             this.wOffset += this.ww;
-            this.hh = 0;
+            this.hOffset += this.hh;
             this.ww = 0;
+            this.hh = 0;
             console.log("---");
         }
 

@@ -43,7 +43,7 @@ export class Crop {
         });
     }
     _draw() {
-        let {
+        const {
             image, context,
             wCanvas, hCanvas,
             zoom,
@@ -55,8 +55,8 @@ export class Crop {
         context.drawImage(image,
             0, 0,
             wImage, hImage,
-            wCanvas/2 + wOffset - wCanvas*zoom/2,
-            hCanvas/2 + hOffset - wCanvas*zoom/2*(hImage/wImage),
+            wCanvas/2 + wOffset - wCanvas*zoom/2 + this.ww,
+            hCanvas/2 + hOffset - wCanvas*zoom/2*(hImage/wImage) + this.hh,
             wCanvas*zoom,
             wCanvas*zoom*(hImage/wImage),
         );
@@ -97,14 +97,44 @@ export class Crop {
      * @param {number} count
      */
     zoomByStep(count) {
+
+
+        const {
+            image, context,
+            wCanvas, hCanvas,
+            zoom,
+            wOffset, hOffset,
+            wImage, hImage,
+            ww,hh
+        } = this;
+
+
+
         const step = this.wCanvas*0.05;
         const steps = Math.round(this.zoomCanvasDiffPx / step);
         this.zoomCanvasDiffPx = step * (steps + count);
         if (this.zoomCanvasDiffPx <= -this.wCanvas) {
             this.zoomCanvasDiffPx = -this.wCanvas + 1;
         }
+
+
+
+        const z = this.zoom - zoom;
+        const d = (wOffset )*z
+        const h = (hOffset )*z
+
+        this.ww += d;
+        this.hh += h;
+
+        console.log({z, d, h});
+
+
+
         this.draw();
     }
+
+    ww = 0;
+    hh = 0;
 
     /**
      * Move the canvas by
@@ -112,6 +142,15 @@ export class Crop {
      * @param {number} dy
      */
     offset({dx, dy}) {
+
+        if (this.ww || this.hh) {
+            this.hOffset += this.hh;
+            this.wOffset += this.ww;
+            this.hh = 0;
+            this.ww = 0;
+            console.log("---");
+        }
+
         this.hOffset += dy;
         this.wOffset += dx;
         this.draw();

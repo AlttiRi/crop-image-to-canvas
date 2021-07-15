@@ -120,13 +120,13 @@ export class Crop {
 
 
         const z = this.zoom - zoom;
-        const d = (wOffset )*z
+        const w = (wOffset )*z
         const h = (hOffset )*z
 
-        this.ww += d;
+        this.ww += w;
         this.hh += h;
 
-        console.log({z, d, h});
+        console.log({z, w, h});
 
 
 

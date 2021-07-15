@@ -18,7 +18,7 @@ export class Crop {
         const init = () => {
             this.wImage = this.image.naturalWidth;
             this.hImage = this.image.naturalHeight;
-            Object.assign(this, this._computeProps());
+            this._computeProps();
             this.draw();
         }
 
@@ -43,60 +43,38 @@ export class Crop {
         });
     }
     _draw() {
-        const {
+        let {
             image, context,
             wCanvas, hCanvas,
             zoom,
             wOffset, hOffset,
-            k,
-            wSource, hSource,
-            wBaseOffset, hBaseOffset
+            wImage, hImage
         } = this;
 
         context.clearRect(0, 0, wCanvas, hCanvas);
         context.drawImage(image,
-            wBaseOffset + (wSource - wSource*zoom)/2 + wOffset*k*zoom,
-            hBaseOffset + (hSource - hSource*zoom)/2 + hOffset*k*zoom,
-            wSource*zoom, hSource*zoom,
             0, 0,
-            wCanvas, hCanvas,
+            wImage, hImage,
+            wCanvas/2 + wOffset - wCanvas*zoom/2,
+            hCanvas/2 + hOffset - wCanvas*zoom/2*(hImage/wImage),
+            wCanvas*zoom,
+            wCanvas*zoom*(hImage/wImage),
         );
     }
-
-    /**
-     * @return {{
-     *   k: number,
-     *   wSource: number,
-     *   hSource: number,
-     *   wBaseOffset: number,
-     *   hBaseOffset: number,
-     * }}
-     * @private
-     */
     _computeProps() {
         const {wImage, hImage, wCanvas, hCanvas} = this;
-        const canvasAspectRatio = wCanvas / hCanvas;
-        if (wImage > hImage) {
+        if (wImage > hImage) { //todo
             // if landscape
-            const wSource = hImage * canvasAspectRatio;
-            const hSource = hImage;
-            const wBaseOffset = (wImage - wSource) / 2;
-            const hBaseOffset = 0;
-            const k = hImage / hCanvas;
-            return {k, wSource, hSource, wBaseOffset, hBaseOffset};
+            this.zoomCanvasDiffPx = -(hImage/wImage)*wCanvas
+            //this.zoomCanvasDiffPx = -(hCanvas*hImage/wImage)*wCanvas/hCanvas
+            //this.zoomCanvasDiffPxH = -(hCanvas*hImage/wImage)
         } else {
             // if portrait
-            const wSource = wImage;
-            const hSource = wImage / canvasAspectRatio;
-            const wBaseOffset = 0;
-            const hBaseOffset = (hImage - hSource) / 2;
-            const k = wImage / wCanvas;
-            return {k, wSource, hSource, wBaseOffset, hBaseOffset};
         }
     }
 
     get zoom() {
-        return this.wCanvas/(this.wCanvas + this.zoomCanvasDiffPx);
+       return this.wCanvas/(this.wCanvas + this.zoomCanvasDiffPx);
     }
 
     moveX(px) {

@@ -2,31 +2,31 @@ export function enableCropDefaultControls({crop, canvas}) {
     document.body.addEventListener("keydown", event => {
         if (event.code === "ArrowLeft") {
             event.preventDefault();
-            crop.moveX(-1);
+            crop.moveX(1);
         } else if (event.code === "ArrowRight") {
             event.preventDefault();
-            crop.moveX(1);
+            crop.moveX(-1);
         } else if (event.code === "ArrowUp") {
             event.preventDefault();
-            crop.moveY(1);
+            crop.moveY(-1);
         } else if (event.code === "ArrowDown") {
             event.preventDefault();
-            crop.moveY(-1);
+            crop.moveY(1);
         } else if (event.code === "ShiftRight") {
             event.preventDefault();
-            crop.zoomByPx(1);
+            crop.zoomByPx(-1);
         } else if (event.code === "ControlRight") {
             event.preventDefault();
-            crop.zoomByPx(-1);
+            crop.zoomByPx(1);
         }
     });
     canvas.addEventListener("wheel", event => {
         event.preventDefault();
         if (event.deltaY < 0) {
-            crop.zoomByStep(1);
+            crop.zoomByStep(-1);
             // console.log("^");
         } else {
-            crop.zoomByStep(-1);
+            crop.zoomByStep(1);
             // console.log("v");
         }
     }, {passive: false});
@@ -40,13 +40,13 @@ export function enableCropDefaultControls({crop, canvas}) {
         }
         isPressed = true;
         document.body.style.userSelect = "none";
-        document.body.style.cursor = "move";
+        // document.body.style.cursor = "move";
         state = {x: event.clientX, y: event.clientY};
     });
     document.addEventListener("pointerup", event => {
         isPressed = false;
         document.body.style.userSelect = "auto";
-        document.body.style.cursor = "auto";
+        // document.body.style.cursor = "auto";
         state = null;
     });
     document.addEventListener("pointermove", event => {
@@ -55,8 +55,8 @@ export function enableCropDefaultControls({crop, canvas}) {
         }
         const {clientX: x, clientY: y} = event;
         crop.offset({
-            dx: state.x - x,
-            dy: state.y - y
+            dx: -state.x + x,
+            dy: -state.y + y
         });
         state = {x, y};
     });

@@ -42,7 +42,7 @@ export class Crop {
             this._redrawQueued = false;
         });
     }
-    state = null;
+    _preState = null;
     _draw() {
         const {
             image, context,
@@ -57,10 +57,10 @@ export class Crop {
         const destWidth = wCanvas*zoom;
         const destHeight = wCanvas*zoom*(hImage/wImage);
 
-        if (!this.state) {
-            this.state = {destX,destY,destWidth,destHeight};
+        if (!this._preState) {
+            this._preState = {destX, destY, destWidth, destHeight, zoom};
         }
-        console.log({destX,destY,destWidth,destHeight});
+        console.log({destX, destY, destWidth, destHeight});
 
         // zoom to the image center
         // this.wOffset = dx += (-dw + this.info.dw)/2;
@@ -68,8 +68,8 @@ export class Crop {
         // else
 
         const k = (hImage/wImage)*(wCanvas/hCanvas);
-        const centerOffsetX = ((destWidth/2 + destX)/wCanvas *2 -1)/zoom;
-        const centerOffsetY = ((destHeight/2 + destY)/hCanvas*2 -1)/zoom/k;
+        const centerOffsetX =  ((destWidth/2 + destX)/wCanvas*2 - 1)/zoom;
+        const centerOffsetY = ((destHeight/2 + destY)/hCanvas*2 - 1)/zoom/k;
         console.log({centerOffsetX, centerOffsetY});
         /* [Note]
             Case (X, Y):
@@ -84,10 +84,9 @@ export class Crop {
         const {
              destWidth: oldDestWidth,   destX: oldDestX,  zoom: oldZoom,
             destHeight: oldDestHeight,  destY: oldDestY,
-        } = this.state;
+        } = this._preState;
 
-        const destWidthChanged = oldDestWidth !== destWidth; // do only on zoom, not on move
-        if (destWidthChanged) {
+        if (oldZoom !== zoom) {
             destX = 1/2*wCanvas*zoom*((oldDestWidth/wCanvas  + 2*oldDestX/wCanvas - 1)/oldZoom + (1 - destWidth/wCanvas)/zoom);
             this.wOffset = destX;
 
@@ -103,11 +102,10 @@ export class Crop {
             destWidth, destHeight,
         );
 
-        this.state = {
+        this._preState = {
             destX, destY,
             destWidth, destHeight,
-            zoom,
-            centerOffsetX, centerOffsetY
+            zoom
         };
     }
 

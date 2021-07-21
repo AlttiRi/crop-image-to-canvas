@@ -22,7 +22,7 @@
 </head>
 <body>
 <div style="border: darkgray solid 1px; display: grid; position: relative;">
-    <div id="center"></div>
+<!--    <div id="center"></div>-->
     <canvas></canvas>
     <img src="doom.jpg" alt="" style="width: 512px;">
 </div>
@@ -36,14 +36,14 @@
     canvas.width = 512;
     canvas.height = canvas.width*(2/3);
 
-    const style = `
-    width: 3px;
-    height: 3px;
-    background-color: red;
-    position: absolute;
-    left: ${canvas.width/2 - 1.5}px;
-    top: ${canvas.height/2 - 1.5}px;`;
-    document.querySelector("#center").style = style;
+    // const style = `
+    // width: 3px;
+    // height: 3px;
+    // background-color: red;
+    // position: absolute;
+    // left: ${canvas.width/2 - 1.5}px;
+    // top: ${canvas.height/2 - 1.5}px;`;
+    // document.querySelector("#center").style = style;
 
     const crop = new Crop({canvas, image});
     enableCropDefaultControls({crop, canvas, changeCursor: false});

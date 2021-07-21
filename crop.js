@@ -8,8 +8,6 @@ export class Crop {
         this.image = image;
         this.canvas = canvas;
         this.context = canvas.getContext("2d");
-        this.wCanvas = canvas.width;
-        this.hCanvas = canvas.height;
 
         this.destX = 0;
         this.destY = 0;
@@ -28,6 +26,9 @@ export class Crop {
             init();
         }
     }
+
+    get wCanvas() { return this.canvas.width;  }
+    get hCanvas() { return this.canvas.height; }
 
     _redrawQueued = false;
 

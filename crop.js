@@ -42,7 +42,7 @@ export class Crop {
             this._redrawQueued = false;
         });
     }
-    info = null;
+    state = null;
     _draw() {
         const {
             image, context,
@@ -52,54 +52,43 @@ export class Crop {
             wImage, hImage
         } = this;
 
-        let dx =  +wOffset// +wCanvas/2 //-wCanvas*zoom/2
-        let dy =  +hOffset// +hCanvas/2 //-wCanvas*zoom/2*(hImage/wImage)
-        let dw = wCanvas*zoom;
-        let dh = wCanvas*zoom*(hImage/wImage);
+        let dx =  +wOffset;
+        let dy =  +hOffset;
+        const dw = wCanvas*zoom;
+        const dh = wCanvas*zoom*(hImage/wImage);
 
-        if (!this.info) {
-            this.info = {dx,dy,dw,dh};
+        if (!this.state) {
+            this.state = {dx,dy,dw,dh};
         }
         console.log({dx,dy,dw,dh});
 
-        // center
-        this.wOffset = dx += (-dw + this.info.dw)/2
-        this.hOffset = dy += (-dh + this.info.dh)/2
+        // zoom to the image center
+        // this.wOffset = dx += (-dw + this.info.dw)/2;
+        // this.hOffset = dy += (-dh + this.info.dh)/2;
+        // else
 
 
-        const width = this.canvas.width;
-        const height = this.canvas.height;
-        const wp = ((dw/2 + dx)/width *2 -1)/zoom;
-        const k = (hImage/wImage)*(width/height);
-        
-        const hp = ((dh/2 + dy)/height*2 -1)/zoom/k;
+        const cWidth = this.canvas.width;
+        const cHeight = this.canvas.height;
+        const wp = ((dw/2 + dx)/cWidth *2 -1)/zoom;
+        const k = (hImage/wImage)*(cWidth/cHeight);
+        const hp = ((dh/2 + dy)/cHeight*2 -1)/zoom/k;
         console.log({wp, hp});
 
-        const oldWp = this.wp;
-        if (this.wp !== undefined && oldWp !== wp && this.info.dw !== dw) {
-            console.log("----");
+        const {
+            dw: oldDw, dh: oldDh, dx: oldDx, dy: oldDy, zoom: oldZoom, wp: oldWp
+        } = this.state;
 
+        const widthCenterChanged = (oldWp !== undefined) && (oldWp !== wp);
+        const widthChanged = oldDw !== dw;
+        if (widthCenterChanged && widthChanged) {
 
-            // const __wp = dw/width/zoom + dx/width*2/zoom -1/zoom ;
-
-            // old_dw/width/old_zoom + old_dx/width*2/old_zoom -1/old_zoom
-            // ===
-            // dw/width/zoom + (dx + XXX)/width*2/zoom -1/zoom
-
-            // (dx + XXX)/width*2/zoom === old_dw/width/old_zoom + old_dx/width*2/old_zoom -1/old_zoom - dw/width/zoom + 1/zoom
-
-
-            let xxx = (this.info.dw/width/this.info.zoom    + this.info.dx/width *2/this.info.zoom   -1/this.info.zoom   - dw/width/zoom    + 1/zoom)/2*zoom*width     - dx;
-
+            let xxx = (oldDw/cWidth/oldZoom    + oldDx/cWidth *2/oldZoom   -1/oldZoom   - dw/cWidth/zoom    + 1/zoom)/2*zoom*cWidth      - dx;
             this.wOffset = dx += xxx;
 
-            let yyy = (this.info.dh/height/this.info.zoom/k + this.info.dy/height*2/this.info.zoom/k -1/this.info.zoom/k - dh/height/zoom/k + 1/zoom/k)/2*zoom*k*height - dy;
+            let yyy = (oldDh/cHeight/oldZoom/k + oldDy/cHeight*2/oldZoom/k -1/oldZoom/k - dh/cHeight/zoom/k + 1/zoom/k)/2*zoom*k*cHeight - dy;
             this.hOffset = dy += yyy;
         }
-
-
-
-        Object.assign(this, {wp, hp});
 
         context.clearRect(0, 0, wCanvas, hCanvas);
         context.drawImage(image,
@@ -109,7 +98,7 @@ export class Crop {
             dw, dh,
         );
 
-        this.info = {dx,dy,dw,dh,zoom};
+        this.state = {dx,dy,dw,dh,zoom,wp,hp};
     }
     _fitImage() {
         const {wImage, hImage, wCanvas, hCanvas} = this;

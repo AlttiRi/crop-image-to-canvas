@@ -21,9 +21,17 @@
     <link rel="preload" href="./crop-control.js" as="script" crossorigin>
 </head>
 <body>
-<div style="border: darkgray solid 1px; display: grid">
+<div style="border: darkgray solid 1px; display: grid; position: relative;">
+    <div style="
+      width: 3px;
+      height: 3px;
+      background-color: red;
+      position: absolute;
+      top: calc(-1px + 512px*2/3/2);
+      left: calc(-1px + 512px/2);;
+    "></div>
     <canvas></canvas>
-    <img src="./doom.jpg" alt="" style="width: 512px;">
+    <img src="doom.jpg" alt="" style="width: 512px;">
 </div>
 
 <script type="module">

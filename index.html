@@ -17,15 +17,25 @@
             align-items: center;
         }
     </style>
-    <link rel="preload" href="./crop.js" as="script" crossorigin>
-    <link rel="preload" href="./crop-control.js" as="script" crossorigin>
+    <link rel="preload" href="./crop.js" as="script" crossorigin="anonymous">
+    <link rel="preload" href="./crop-control.js" as="script" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<div style="border: darkgray solid 1px; display: grid; position: relative;">
-<!--    <div id="center"></div>-->
-    <canvas></canvas>
-    <img src="doom.jpg" alt="" style="width: 512px;">
+<div class="grid">
+    <div style="grid-area: left1;" class="left">
+        <span class="r90" title="Canvas">Canvas</span>
+    </div>
+    <div style="grid-area: left2;" class="left">
+        <span class="r90" title="Image">Image</span>
+    </div>
+    <div class="canvas-wrap">
+    <!--<div id="center"></div>-->
+        <canvas></canvas>
+    </div>
+    <img class="image" src="doom.jpg" alt="">
 </div>
+
 
 <script type="module">
     import {Crop} from "./crop.js";

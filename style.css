@@ -1,0 +1,30 @@
+.grid {
+    display: grid;
+    grid-template-areas:
+                "left1 canvas"
+                "left2 image";
+}
+.canvas-wrap {
+    grid-area: canvas;
+    width: 512px;
+    border-top: darkgray solid 1px;
+    border-left: darkgray solid 1px;
+    border-right: darkgray solid 1px;
+    display: grid;
+    position: relative;
+}
+.image {
+    grid-area: image;
+    width: 512px;
+    border-bottom: darkgray solid 1px;
+    border-left: darkgray solid 1px;
+    border-right: darkgray solid 1px;
+}
+.r90 {
+    transform: rotate(-90deg);
+}
+.left {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}

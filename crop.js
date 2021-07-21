@@ -83,15 +83,13 @@ export class Crop {
 
         const {
             dw: oldDw, dh: oldDh, dx: oldDx, dy: oldDy, zoom: oldZoom,
-            centerOffsetX: oldCenterOffsetX
         } = this.state;
 
         const destWidthChanged = (oldDw !== dw); // do only on zoom, not on move
-        // const widthCenterChanged = (oldCenterOffsetX !== undefined) && (oldCenterOffsetX !== centerOffsetX);
-        if (destWidthChanged/* && widthCenterChanged*/) {
+        if (destWidthChanged) {
             console.log("suka");
 
-            let xxx = (oldDw/wCanvas/oldZoom    + oldDx/wCanvas *2/oldZoom   -1/oldZoom   - dw/wCanvas/zoom    + 1/zoom)/2*zoom*wCanvas      - dx;
+            let xxx = (oldDw/wCanvas/oldZoom  + oldDx/wCanvas *2/oldZoom   -1/oldZoom   - dw/wCanvas/zoom   + 1/zoom)/2*zoom*wCanvas     - dx;
             this.wOffset = dx += xxx;
 
             let yyy = (oldDh/hCanvas/oldZoom/k + oldDy/hCanvas*2/oldZoom/k -1/oldZoom/k - dh/hCanvas/zoom/k + 1/zoom/k)/2*zoom*k*hCanvas - dy;

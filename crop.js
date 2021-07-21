@@ -68,8 +68,11 @@ export class Crop {
 
 
         const width = this.canvas.width;
+        const height = this.canvas.height;
         const wp = ((dw/2 + dx)/width *2 -1)/zoom;
-        const hp = ((dh/2 + dy)/this.canvas.height*2 -1)/zoom/(hImage/wImage)/(this.canvas.width/this.canvas.height);
+        const k = (hImage/wImage)*(width/height);
+        
+        const hp = ((dh/2 + dy)/height*2 -1)/zoom/k;
         console.log({wp, hp});
 
         const oldWp = this.wp;
@@ -86,11 +89,12 @@ export class Crop {
             // (dx + XXX)/width*2/zoom === old_dw/width/old_zoom + old_dx/width*2/old_zoom -1/old_zoom - dw/width/zoom + 1/zoom
 
 
-            let xxx;
-            xxx = (this.info.dw/width/this.info.zoom + this.info.dx/width*2/this.info.zoom -1/this.info.zoom - dw/width/zoom + 1/zoom)/2*zoom*width - dx;
+            let xxx = (this.info.dw/width/this.info.zoom    + this.info.dx/width *2/this.info.zoom   -1/this.info.zoom   - dw/width/zoom    + 1/zoom)/2*zoom*width     - dx;
 
             this.wOffset = dx += xxx;
 
+            let yyy = (this.info.dh/height/this.info.zoom/k + this.info.dy/height*2/this.info.zoom/k -1/this.info.zoom/k - dh/height/zoom/k + 1/zoom/k)/2*zoom*k*height - dy;
+            this.hOffset = dy += yyy;
         }
 
 

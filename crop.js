@@ -52,15 +52,15 @@ export class Crop {
             wImage, hImage
         } = this;
 
-        let dx =  +wOffset;
-        let dy =  +hOffset;
-        const dw = wCanvas*zoom;
-        const dh = wCanvas*zoom*(hImage/wImage);
+        let destX = wOffset;
+        let destY = hOffset;
+        const destWidth = wCanvas*zoom;
+        const destHeight = wCanvas*zoom*(hImage/wImage);
 
         if (!this.state) {
-            this.state = {dx,dy,dw,dh};
+            this.state = {destX,destY,destWidth,destHeight};
         }
-        console.log({dx,dy,dw,dh});
+        console.log({destX,destY,destWidth,destHeight});
 
         // zoom to the image center
         // this.wOffset = dx += (-dw + this.info.dw)/2;
@@ -68,8 +68,8 @@ export class Crop {
         // else
 
         const k = (hImage/wImage)*(wCanvas/hCanvas);
-        const centerOffsetX = ((dw/2 + dx)/wCanvas *2 -1)/zoom;
-        const centerOffsetY = ((dh/2 + dy)/hCanvas*2 -1)/zoom/k;
+        const centerOffsetX = ((destWidth/2 + destX)/wCanvas *2 -1)/zoom;
+        const centerOffsetY = ((destHeight/2 + destY)/hCanvas*2 -1)/zoom/k;
         console.log({centerOffsetX, centerOffsetY});
         /* [Note]
             Case (X, Y):
@@ -82,30 +82,35 @@ export class Crop {
          */
 
         const {
-            dw: oldDw, dh: oldDh, dx: oldDx, dy: oldDy, zoom: oldZoom,
+             destWidth: oldDestWidth,   destX: oldDestX,  zoom: oldZoom,
+            destHeight: oldDestHeight,  destY: oldDestY,
         } = this.state;
 
-        const destWidthChanged = (oldDw !== dw); // do only on zoom, not on move
+        const destWidthChanged = oldDestWidth !== destWidth; // do only on zoom, not on move
         if (destWidthChanged) {
-            console.log("suka");
+            destX = 1/2*wCanvas*zoom*((oldDestWidth/wCanvas  + 2*oldDestX/wCanvas - 1)/oldZoom + (1 - destWidth/wCanvas)/zoom);
+            this.wOffset = destX;
 
-            let xxx = (oldDw/wCanvas/oldZoom  + oldDx/wCanvas *2/oldZoom   -1/oldZoom   - dw/wCanvas/zoom   + 1/zoom)/2*zoom*wCanvas     - dx;
-            this.wOffset = dx += xxx;
-
-            let yyy = (oldDh/hCanvas/oldZoom/k + oldDy/hCanvas*2/oldZoom/k -1/oldZoom/k - dh/hCanvas/zoom/k + 1/zoom/k)/2*zoom*k*hCanvas - dy;
-            this.hOffset = dy += yyy;
+            destY = 1/2*hCanvas*zoom*((oldDestHeight/hCanvas + 2*oldDestY/hCanvas - 1)/oldZoom + (1 - destHeight/hCanvas)/zoom);
+            this.hOffset = destY;
         }
 
         context.clearRect(0, 0, wCanvas, hCanvas);
         context.drawImage(image,
             0, 0,
             wImage, hImage,
-            dx, dy,
-            dw, dh,
+            destX, destY,
+            destWidth, destHeight,
         );
 
-        this.state = {dx,dy,dw,dh,zoom,centerOffsetX,centerOffsetY};
+        this.state = {
+            destX, destY,
+            destWidth, destHeight,
+            zoom,
+            centerOffsetX, centerOffsetY
+        };
     }
+
     _fitImage() {
         const {wImage, hImage, wCanvas, hCanvas} = this;
         const k = wCanvas/hCanvas; /* to apply H based changes to W axis */

@@ -67,26 +67,34 @@ export class Crop {
         // this.hOffset = dy += (-dh + this.info.dh)/2;
         // else
 
-
-        const cWidth = this.canvas.width;
-        const cHeight = this.canvas.height;
-        const wp = ((dw/2 + dx)/cWidth *2 -1)/zoom;
-        const k = (hImage/wImage)*(cWidth/cHeight);
-        const hp = ((dh/2 + dy)/cHeight*2 -1)/zoom/k;
-        console.log({wp, hp});
+        const k = (hImage/wImage)*(wCanvas/hCanvas);
+        const centerOffsetX = ((dw/2 + dx)/wCanvas *2 -1)/zoom;
+        const centerOffsetY = ((dh/2 + dy)/hCanvas*2 -1)/zoom/k;
+        console.log({centerOffsetX, centerOffsetY});
+        /* [Note]
+            Case (X, Y):
+              ( 0,  0) - the image's center
+              ( 1,  1) - the image's upper left corner
+              (-1,  1) - the image's upper right corner
+              ( 1, -1) - the image's bottom left corner
+              (-1, -1) - the image's bottom right corner
+            ...is in canvas' center.
+         */
 
         const {
-            dw: oldDw, dh: oldDh, dx: oldDx, dy: oldDy, zoom: oldZoom, wp: oldWp
+            dw: oldDw, dh: oldDh, dx: oldDx, dy: oldDy, zoom: oldZoom,
+            centerOffsetX: oldCenterOffsetX
         } = this.state;
 
-        const widthCenterChanged = (oldWp !== undefined) && (oldWp !== wp);
-        const widthChanged = oldDw !== dw;
-        if (widthCenterChanged && widthChanged) {
+        const destWidthChanged = (oldDw !== dw); // do only on zoom, not on move
+        // const widthCenterChanged = (oldCenterOffsetX !== undefined) && (oldCenterOffsetX !== centerOffsetX);
+        if (destWidthChanged/* && widthCenterChanged*/) {
+            console.log("suka");
 
-            let xxx = (oldDw/cWidth/oldZoom    + oldDx/cWidth *2/oldZoom   -1/oldZoom   - dw/cWidth/zoom    + 1/zoom)/2*zoom*cWidth      - dx;
+            let xxx = (oldDw/wCanvas/oldZoom    + oldDx/wCanvas *2/oldZoom   -1/oldZoom   - dw/wCanvas/zoom    + 1/zoom)/2*zoom*wCanvas      - dx;
             this.wOffset = dx += xxx;
 
-            let yyy = (oldDh/cHeight/oldZoom/k + oldDy/cHeight*2/oldZoom/k -1/oldZoom/k - dh/cHeight/zoom/k + 1/zoom/k)/2*zoom*k*cHeight - dy;
+            let yyy = (oldDh/hCanvas/oldZoom/k + oldDy/hCanvas*2/oldZoom/k -1/oldZoom/k - dh/hCanvas/zoom/k + 1/zoom/k)/2*zoom*k*hCanvas - dy;
             this.hOffset = dy += yyy;
         }
 
@@ -98,7 +106,7 @@ export class Crop {
             dw, dh,
         );
 
-        this.state = {dx,dy,dw,dh,zoom,wp,hp};
+        this.state = {dx,dy,dw,dh,zoom,centerOffsetX,centerOffsetY};
     }
     _fitImage() {
         const {wImage, hImage, wCanvas, hCanvas} = this;

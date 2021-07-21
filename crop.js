@@ -67,53 +67,24 @@ export class Crop {
         this.wOffset = dx += (-dw + this.info.dw)/2
         this.hOffset = dy += (-dh + this.info.dh)/2
 
-        // funny
-        // this.wOffset = dx += (this.info.dw -dw - wOffset)/2
-        // this.hOffset = dy += (this.info.dh -dh - hOffset)/2
-
-        // 3
-        // this.wOffset = dx += (this.info.dw -dw )/2
-        // if (this.info.dw -dw) {
-        //     //console.log((this.canvas.width/2 - (this.info.dw -dw )/2));
-        //     // this.wOffset = dx += - (this.info.dw -dw )/2
-        // }
-        //
-        // this.hOffset = dy += (this.info.dh -dh )/2
-
-        // this
-        // this.wOffset
-        // not
-        // wOffset
 
         const width = this.canvas.width;
-
         const wp = ((dw/2  + dx)/width *2 -1)/zoom;
         const hp = ((dh/2  + dy)/this.canvas.height*2 -1)/zoom/(hImage/wImage)/(this.canvas.width/this.canvas.height);
-        // const q = (+ dw/2  + dx - this.canvas.width/2 );
-        // const e = (+ dh/2  + dy)/this.canvas.height;
         console.log({wp, hp});
 
         const oldWp = this.wp;
         if (this.wp !== undefined && oldWp !== wp && this.info.dw !== dw) {
-            console.log("suka");
+            console.log("----");
+
 
             // const __wp = dw/width/zoom + dx/width*2/zoom -1/zoom ;
-            // const __dx = ((1/zoom - dw/width/zoom)*width*zoom/2)
-            //
-            // let dxSuka;
-
 
             // old_dw/width/old_zoom + old_dx/width*2/old_zoom -1/old_zoom
             // ===
             // dw/width/zoom + (dx + XXX)/width*2/zoom -1/zoom
 
-
             // (dx + XXX)/width*2/zoom === old_dw/width/old_zoom + old_dx/width*2/old_zoom -1/old_zoom - dw/width/zoom + 1/zoom
-
-            //dxSuka =
-
-            // console.log("---", dxSuka);
-            // console.log(oldWp, ((+ dw/2  + dx)/this.canvas.width*2 -1)/zoom);
 
 
             let xxx;
@@ -135,8 +106,6 @@ export class Crop {
             dw, dh,
         );
 
-
-        // Object.assign(this, {dx,dy,dw,dh,zoom});
         this.info = {dx,dy,dw,dh,zoom};
     }
     _fitImage() {
@@ -151,9 +120,6 @@ export class Crop {
     get zoom() {
        return this.wCanvas/(this.wCanvas + this.zoomCanvasDiffPx);
     }
-    // // zoom = 1.00
-    // zoomChange = 0;
-
     moveX(px) {
         this.wOffset -= px;
         this.draw();
@@ -178,65 +144,14 @@ export class Crop {
      * @param {number} count
      */
     zoomByStep(count) {
-
-        // //
-        // const {
-        //     image, context,
-        //     wCanvas, hCanvas,
-        //     zoom,
-        //     wOffset, hOffset,
-        //     wImage, hImage,
-        //     ww,hh
-        // } = this;
-        // //
-        //
-        // // this.zoom -= count*0.1
-
         const step = this.wCanvas*0.05;
         const steps = Math.round(this.zoomCanvasDiffPx / step);
         this.zoomCanvasDiffPx = step * (steps + count);
         if (this.zoomCanvasDiffPx <= -this.wCanvas) {
             this.zoomCanvasDiffPx = -this.wCanvas + 1;
         }
-
-
-
-
-//         const z = this.zoom - zoom;
-//         this.zoomChange = z;
-//         // console.log(this.zoom);
-//         // this.wOffset +=(wOffset*z);
-//         // this.hOffset += (hOffset )*z/2;
-//         //
-//
-//         console.log({z, zoom: this.zoom});
-//         console.log("==", wCanvas*this.zoom, this.info.dw);
-//         //this.wOffset +=  (wCanvas*this.zoom)*z*(this.wp/2)
-//
-//         // console.log( this.info.dw*z/2);
-// ///////////////////////
-//         // this.wOffset += (this.info.dw*z)/2
-//         //
-//
-//         // const w = (wOffset )*z
-//         // const h = (hOffset )*z
-//         //
-//         // this.ww += w;
-//         // this.hh += h;
-//
-//         // console.log({z:z.toFixed(2),
-//             // w:w.toFixed(2),h: h.toFixed(2),
-//             // wOffset: wOffset.toFixed(2),  hOffset: hOffset.toFixed(2)});
-//         //
-
-
         this.draw();
     }
-
-    // //
-    // ww = 0;
-    // hh = 0;
-    // //
 
     /**
      * Move the canvas by
@@ -244,17 +159,6 @@ export class Crop {
      * @param {number} dy
      */
     offset({dx, dy}) {
-
-        //
-        // if (this.ww || this.hh) {
-        //     this.wOffset += this.ww;
-        //     this.hOffset += this.hh;
-        //     this.ww = 0;
-        //     this.hh = 0;
-        //     console.log("---");
-        // }
-        // //
-
         this.hOffset += dy;
         this.wOffset += dx;
         this.draw();

@@ -7,12 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         html, body {
-            min-height: 100vh;
+            height: 100%;
             margin: 0;
-        }
-        body {
             display: flex;
-            flex-direction: column;
+            flex-grow: 1;
             justify-content: center;
             align-items: center;
         }
@@ -22,20 +20,22 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<div class="grid">
-    <div style="grid-area: left1;" class="left">
-        <span class="r90" title="Canvas">Canvas</span>
+<div class="column">
+    <div class="grid">
+        <div style="grid-area: left1;" class="left">
+            <span class="r90" title="Canvas">Canvas</span>
+        </div>
+        <div style="grid-area: left2;" class="left">
+            <span class="r90" title="Image">Image</span>
+        </div>
+        <div class="canvas-wrap">
+        <!--<div id="center"></div>-->
+            <canvas></canvas>
+        </div>
+        <img class="image" src="doom.jpg" alt="">
     </div>
-    <div style="grid-area: left2;" class="left">
-        <span class="r90" title="Image">Image</span>
-    </div>
-    <div class="canvas-wrap">
-    <!--<div id="center"></div>-->
-        <canvas></canvas>
-    </div>
-    <img class="image" src="doom.jpg" alt="">
+    <div id="readme"><a target="_blank noopener noreferrer" href="https://github.com/AlttiRi/crop-image-to-canvas#readme">Readme</a></div>
 </div>
-
 
 <script type="module">
     import {Crop} from "./crop.js";

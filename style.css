@@ -28,3 +28,25 @@
     justify-content: center;
     flex-direction: column;
 }
+
+.column {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 1280px;
+    position: relative;
+    height: 100%;
+}
+#readme a {
+    padding: 0.5em;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-decoration: none;
+    color: #1c1c1c;
+}
+#readme a:visited {
+    color: #4a4a4a;
+}

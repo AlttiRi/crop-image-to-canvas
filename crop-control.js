@@ -1,4 +1,4 @@
-export function enableCropDefaultControls({crop, canvas}) {
+export function enableCropDefaultControls({crop, canvas, changeCursor}) {
     document.body.addEventListener("keydown", event => {
         if (event.code === "ArrowLeft") {
             event.preventDefault();
@@ -40,13 +40,17 @@ export function enableCropDefaultControls({crop, canvas}) {
         }
         isPressed = true;
         document.body.style.userSelect = "none";
-        // document.body.style.cursor = "move";
+        if (changeCursor) {
+            document.body.style.cursor = "move";
+        }
         state = {x: event.clientX, y: event.clientY};
     });
     document.addEventListener("pointerup", event => {
         isPressed = false;
         document.body.style.userSelect = "auto";
-        // document.body.style.cursor = "auto";
+        if (changeCursor) {
+            document.body.style.cursor = "auto";
+        }
         state = null;
     });
     document.addEventListener("pointermove", event => {

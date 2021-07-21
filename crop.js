@@ -50,6 +50,62 @@ export class Crop {
             wCanvas, hCanvas,
             wImage, hImage,
 
+            // variable
+            destX, destY,
+
+            // computed
+            zoom,
+            destWidth, destHeight
+        } = this;
+
+        console.log(this.getCenterOffsets());
+
+        context.clearRect(0, 0, wCanvas, hCanvas);
+        context.drawImage(image,
+            0, 0,
+            wImage, hImage,
+            destX, destY,
+            destWidth, destHeight,
+        );
+
+        this._preState = {
+            destX, destY,
+            destWidth, destHeight,
+            zoom
+        };
+    }
+
+    /**
+     * Note: `_afterZoom()` is based on that formulas
+     * @return {{centerOffsetY: number, centerOffsetX: number}}
+     */
+    getCenterOffsets() {
+        const {
+            // const
+            wCanvas, hCanvas,
+            wImage, hImage,
+
+            // variable
+            destX, destY,
+
+            // computed
+            zoom,
+            destWidth, destHeight
+        } = this;
+
+        const k = (hImage/wImage)*(wCanvas/hCanvas);
+        const centerOffsetX =  ((destWidth/2 + destX)/wCanvas*2 - 1)/zoom;
+        const centerOffsetY = ((destHeight/2 + destY)/hCanvas*2 - 1)/zoom/k;
+        return {centerOffsetX, centerOffsetY};
+    }
+
+    /** Fixes offsets
+     *  @private  */
+    _afterZoom() {
+        const {
+            // const
+            wCanvas, hCanvas,
+
             // computed
             zoom,
             destWidth, destHeight
@@ -76,40 +132,8 @@ export class Crop {
                 this.destY = 1/2*hCanvas*zoom*((oldDestHeight/hCanvas + 2*oldDestY/hCanvas - 1)/oldZoom + (1 - destHeight/hCanvas)/zoom);
             }
         }
+
         zoomToCanvasCenter();
-
-
-        const {destX, destY} = this;
-        const logCenterOffset = () => {
-            const k = (hImage/wImage)*(wCanvas/hCanvas);
-            const centerOffsetX =  ((destWidth/2 + destX)/wCanvas*2 - 1)/zoom;
-            const centerOffsetY = ((destHeight/2 + destY)/hCanvas*2 - 1)/zoom/k;
-            console.log({centerOffsetX, centerOffsetY});
-            /* [Note]
-                Case (X, Y):
-                  ( 0,  0) - the image's center
-                  ( 1,  1) - the image's upper left corner
-                  (-1,  1) - the image's upper right corner
-                  ( 1, -1) - the image's bottom left corner
-                  (-1, -1) - the image's bottom right corner
-                ...is in canvas' center.
-             */
-        }
-        logCenterOffset();
-
-        context.clearRect(0, 0, wCanvas, hCanvas);
-        context.drawImage(image,
-            0, 0,
-            wImage, hImage,
-            destX, destY,
-            destWidth, destHeight,
-        );
-
-        this._preState = {
-            destX, destY,
-            destWidth, destHeight,
-            zoom
-        };
     }
 
     _fitImage() {
@@ -154,6 +178,7 @@ export class Crop {
             return;
         }
         this.zoomCanvasDiffPx += count;
+        this._afterZoom();
         this.draw();
     }
     /**
@@ -166,6 +191,7 @@ export class Crop {
         if (this.zoomCanvasDiffPx <= -this.wCanvas) {
             this.zoomCanvasDiffPx = -this.wCanvas + 1;
         }
+        this._afterZoom();
         this.draw();
     }
 

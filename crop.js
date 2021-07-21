@@ -123,6 +123,7 @@ export class Crop {
             this.zoomCanvasDiffPx = -(hCanvas - wCanvas/(wImage/hImage))*k;
         }
         this.wOffset = wCanvas/2 - wCanvas*this.zoom/2;
+        this.hOffset = hCanvas/2 - wCanvas*this.zoom/2*(hImage/wImage);
     }
 
     get zoom() {

@@ -56,8 +56,14 @@ export class Crop {
         } = this;
 
         const zoomFromImageCenter = () => {
-            this.destX += (this._preState.destWidth  -  destWidth)/2;
-            this.destY += (this._preState.destHeight - destHeight)/2;
+            const {
+                destWidth: oldDestWidth,    zoom: oldZoom,
+                destHeight: oldDestHeight,
+            } = this._preState;
+            if (oldZoom !== zoom) {
+                this.destX += (oldDestWidth - destWidth) / 2;
+                this.destY += (oldDestHeight - destHeight) / 2;
+            }
         }
         const zoomToCanvasCenter = () => {
             const {

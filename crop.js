@@ -51,7 +51,6 @@ export class Crop {
             wOffset, hOffset,
             wImage, hImage
         } = this;
-        Object.assign(globalThis, this);
 
         let dx =  +wOffset// +wCanvas/2 //-wCanvas*zoom/2
         let dy =  +hOffset// +hCanvas/2 //-wCanvas*zoom/2*(hImage/wImage)
@@ -69,8 +68,8 @@ export class Crop {
 
 
         const width = this.canvas.width;
-        const wp = ((dw/2  + dx)/width *2 -1)/zoom;
-        const hp = ((dh/2  + dy)/this.canvas.height*2 -1)/zoom/(hImage/wImage)/(this.canvas.width/this.canvas.height);
+        const wp = ((dw/2 + dx)/width *2 -1)/zoom;
+        const hp = ((dh/2 + dy)/this.canvas.height*2 -1)/zoom/(hImage/wImage)/(this.canvas.width/this.canvas.height);
         console.log({wp, hp});
 
         const oldWp = this.wp;

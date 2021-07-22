@@ -77,7 +77,16 @@ export class Crop {
     }
 
     /**
-     * Note: `_afterZoom()` is based on that formulas
+     *  Case (X, Y):
+     *    ( 0,  0) - the image's center
+     *    ( 1,  1) - the image's upper left corner
+     *    (-1,  1) - the image's upper right corner
+     *    ( 1, -1) - the image's bottom left corner
+     *    (-1, -1) - the image's bottom right corner
+     *  ...is in canvas' center.
+     *
+     * Note: `_afterZoom()` is based on that formulas (of `centerOffsetX`/`centerOffsetY`).
+     * 
      * @return {{centerOffsetY: number, centerOffsetX: number}}
      */
     getCenterOffsets() {
